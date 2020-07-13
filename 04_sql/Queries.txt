@@ -1,0 +1,85 @@
+SQL1:
+SELECT Dish.id, Dish.menus_appeared, COUNT (DISTINCT Menu.id) AS true_menus_count
+FROM Menu JOIN MenuPage JOIN MenuItem JOIN Dish
+WHERE Menu.id = MenuPage.menu_id AND MenuItem.menu_page_id = MenuPage.id AND Dish.id = MenuItem.dish_id
+GROUP BY Dish.id
+HAVING Dish.menus_appeared!=true_menus_count
+
+SQL2:
+SELECT Dish.id, Dish.times_appeared, COUNT (DISTINCT MenuItem.id) AS true_menuitem_count
+FROM MenuItem JOIN Dish
+WHERE Dish.id = MenuItem.dish_id
+GROUP BY Dish.id
+HAVING Dish.times_appeared!=true_menuitem_count
+
+SQL3:
+SELECT Dish.id, Dish.first_appeared, MIN(SUBSTR (Menu.date,1,4)) AS early_date
+FROM Menu JOIN MenuPage JOIN MenuItem JOIN Dish
+WHERE Menu.id = MenuPage.menu_id AND MenuItem.menu_page_id = MenuPage.id AND Dish.id = MenuItem.dish_id
+GROUP BY Dish.id
+HAVING Dish.first_appeared!=early_date
+
+SQL4:
+SELECT Dish.id, Dish.last_appeared, MAX(SUBSTR (Menu.date,1,4)) AS late_date
+FROM Menu JOIN MenuPage JOIN MenuItem JOIN Dish
+WHERE Menu.id = MenuPage.menu_id AND MenuItem.menu_page_id = MenuPage.id AND Dish.id = MenuItem.dish_id
+GROUP BY Dish.id
+HAVING Dish.last_appeared!=late_date
+
+SQL5:
+SELECT Dish.id, Dish.highest_price, MAX((COALESCE(MenuItem.price,0)+COALESCE(MenuItem.high_price,0)+ABS(COALESCE(MenuItem.price,0)-COALESCE(MenuItem.high_price,0)))/2-0) AS real_highest_price
+FROM MenuItem JOIN Dish
+WHERE Dish.id = MenuItem.dish_id
+GROUP BY Dish.id
+HAVING Dish.highest_price!=real_highest_price
+
+SQL6:
+SELECT Dish.id, Dish.lowest_price, MIN(MenuItem.price-0) AS real_lowest_price
+FROM MenuItem JOIN Dish
+WHERE Dish.id = MenuItem.dish_id
+GROUP BY Dish.id
+HAVING Dish.lowest_price!=real_lowest_price
+
+SQL7:
+SELECT Menu.id, Menu.page_count, COUNT (DISTINCT MenuPage.id) AS true_page_count
+FROM Menu JOIN MenuPage
+WHERE Menu.id = MenuPage.menu_id
+GROUP BY Menu.id
+HAVING Menu.page_count!=true_page_count
+
+SQL8:
+SELECT Menu.id, Menu.dish_count, COUNT (DISTINCT Dish.id) AS true_dish_count
+FROM Menu JOIN MenuPage JOIN MenuItem JOIN Dish
+WHERE Menu.id = MenuPage.menu_id AND MenuItem.menu_page_id = MenuPage.id AND Dish.id = MenuItem.dish_id
+GROUP BY Menu.id
+HAVING Menu.dish_count!=true_dish_count
+
+SQL9:
+SELECT m1.id, m1.currency, m1.currency_symbol, m2.id, m2.currency, m2.currency_symbol
+FROM Menu m1, Menu m2
+WHERE m1.id<m2.id AND m1.currency=m2.currency AND m1.currency_symbol!=m2.currency_symbol
+
+SQL10:
+SELECT p1.id, p1.menu_id, p1.page_number, p2.id, p2.menu_id, p2.page_number
+FROM MenuPage p1, MenuPage p2
+WHERE p1.id<p2.id AND p1.menu_id=p2.menu_id AND p1.page_number=p2.page_number
+
+SQL11:
+SELECT id, price, high_price
+FROM MenuItem
+WHERE price-0>high_price-0
+
+SQL12:
+SELECT id, created_at, updated_at
+FROM MenuItem
+WHERE created_at>updated_at
+
+SQL13:
+SELECT id, xpos
+FROM MenuItem
+WHERE xpos<0 OR xpos>1
+
+SQL14:
+SELECT id, ypos
+FROM MenuItem
+WHERE ypos<0 OR ypos>1
