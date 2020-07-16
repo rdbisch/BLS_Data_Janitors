@@ -27,14 +27,14 @@ GROUP BY Dish.id
 HAVING Dish.last_appeared!=late_date
 
 SQL5:
-SELECT Dish.id, Dish.highest_price, MAX((COALESCE(MenuItem.price,0)+COALESCE(MenuItem.high_price,0)+ABS(COALESCE(MenuItem.price,0)-COALESCE(MenuItem.high_price,0)))/2-0) AS real_highest_price
+SELECT Dish.id, Dish.highest_price, MAX(CAST((COALESCE(MenuItem.price,0)+COALESCE(MenuItem.high_price,0)+ABS(COALESCE(MenuItem.price,0)-COALESCE(MenuItem.high_price,0)))/2 AS REAL)) AS real_highest_price
 FROM MenuItem JOIN Dish
 WHERE Dish.id = MenuItem.dish_id
 GROUP BY Dish.id
 HAVING Dish.highest_price!=real_highest_price
 
 SQL6:
-SELECT Dish.id, Dish.lowest_price, MIN(MenuItem.price-0) AS real_lowest_price
+SELECT Dish.id, Dish.lowest_price, MIN(CAST(MenuItem.price AS REAL)) AS real_lowest_price
 FROM MenuItem JOIN Dish
 WHERE Dish.id = MenuItem.dish_id
 GROUP BY Dish.id
