@@ -126,12 +126,5 @@
     "engineConfig": {
       "facets": [],
       "mode": "row-based"
-    },
-    "baseColumnName": "name",
-    "expression": "grel:value",
-    "onError": "keep-original",
-    "newColumnName": "name_cluster",
-    "columnInsertIndex": 2,
-    "description": "Create column name_cluster at index 2 based on column name using expression grel:value"
-  }
+    }
 ]
