@@ -1,6 +1,5 @@
 import pandas as pd
 import re
-import helper
 
 menu = pd.read_csv("../01_openrefine/Menu_clean.csv.gz", compression='gzip')
 menu.fillna('', inplace=True)
