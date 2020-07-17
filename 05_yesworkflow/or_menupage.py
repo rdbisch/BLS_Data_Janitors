@@ -15,7 +15,7 @@
 #@begin core/text-transform0#@desc Text transform on cells in column id using expression value.toNumber()
 #@param col-name:id
 #@param expression:value.toNumber()
-#@in table0
+#@in MenuPage
 #@out table1
 #@end core/text-transform0
 #@begin core/text-transform1#@desc Text transform on cells in column menu_id using expression value.toNumber()
