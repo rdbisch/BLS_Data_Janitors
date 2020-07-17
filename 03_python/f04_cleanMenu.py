@@ -1,9 +1,23 @@
 import pandas as pd
 import re
 
+#@begin CleanMenu_python1
+#@desc Deeper cleaning in Python for Menu table
+#@in Menu_clean @URI file:../01_openrefine/Menu_clean.csv.gz
+#@out Menu_clean2 @URI file:../03_pyhton/p02_menu_cleaned.csv.gz
+
+#@begin readData
+#@desc Import data from CSV into pandas
+#@in Menu_clean
+#@out menu_1
 menu = pd.read_csv("../01_openrefine/Menu_clean.csv.gz", compression='gzip')
 menu.fillna('', inplace=True)
+#@end readData
 
+#@begin mapEventsToMeal
+#@desc Extracts meal time from event, e.g. breakfast, lunch or dinner.
+#@in menu_1
+#@out menu_2
 def mapEventToMeal(E):
     # Manual label overrides
     event = set(
@@ -286,8 +300,12 @@ def mapEventToMeal(E):
         if "menu" in result: result.remove("menu")
             
     return str(result)
+#@end mapEventsToMeal
 
-
+#@begin cleanVenue
+#@desc Clean Venue more thoroughly and group to a higher more useful level.
+#@in menu_2
+#@out menu_3
 def mapVenueToCleanVenue(x):
     other = set(["foreign", "other", "som;", "cam;", "conn", "dom;", "foreigneign", "unknown"])
     com = set(["com", "commercial", "comm", "com; pol", "com; soc", "commercoa;", "other: hospital (?);"])
@@ -318,7 +336,12 @@ def mapVenueToCleanVenue(x):
         
     if results == [] and x != "": results.append("soc")
     return str(results)
+#@end cleanVenue
 
+#@begin cleanPlace
+#@desc Clean place by splitting out vehicular travel and cities
+#@in menu_3
+#@out menu_4
 def cleanPlace(x, key):
     manualClean = {
     "new york":("New York City, New York, US","NA"),
@@ -806,6 +829,7 @@ def cleanPlace(x, key):
     if x in manualClean: return manualClean[x][key]
     elif x == "": return x
     else: return "Unclean"
+#@end cleanPlace
 
 # Finally add the new columns to the data frame and write it back out as CSV
 menu["placeClean"] = menu['place'].apply(lambda x: cleanPlace(x, 0))
@@ -813,10 +837,22 @@ menu["vesselName"] = menu['place'].apply(lambda x: cleanPlace(x, 1))
 menu["meal"] = menu['event'].apply(mapEventToMeal)
 menu["cleanedVenue"] = menu['venue'].apply(mapVenueToCleanVenue)
 
-# Change the date information to ISO format
+#@begin convertDate
+#@desc Change the date information to ISO format
+#@in menu_4
+#@out menu_5
 for item in menu['date']:
     if(item!='' and item[2]=='/'):
         menu['date'].replace(item, ''+item[-4:]+'-'+item[3:5]+'-'+item[0:2],inplace=True)
 print(menu)
+#@end convertDate
 
+#@begin exportData
+#@desc Write data back out to CSV
+#@in menu_5
+#@out Menu_clean2 @URI file:../03_pyhton/p02_menu_cleaned.csv.gz
 menu.to_csv("p02_menu_cleaned.csv.gz", compression='gzip', index = False)
+#@end exportData
+
+#@end CleanMenu_python1
+#@end CleanMenu_python1

@@ -56,7 +56,7 @@
 #@in Dish_clean_dedup
 #@in tokens_cleaned @URI file:../03_python/tokens_cleaned.csv
 #@out Dish_clean2 @URI file:../03_python/p03_disch_cleaned.csv.gz
-#@end CleanDish_Manual
+#@end CleanDish_python2
 
 #@begin Import_Dish
 #@desc SQLite.  Import csv file into SQL database.
