@@ -3,9 +3,25 @@ import numpy as np
 import re
 import helper
 
-dish = pd.read_csv("../01_openrefine/Dish_clean.csv.gz", compression='gzip')
-dish.fillna('', inplace=True)
+#@begin CleanDish_python1
+#@desc Deduplicates dish names after cleaning.   See detail {TBD LINK}.
 
+#@in Dish_clean @URI file:../01_openrefine/Dish_clean.csv.gz
+#@in MenuItem_clean @URI file:../01_openrefine/MenuItem_clean.csv.gz
+
+dish = pd.read_csv("../01_openrefine/Dish_clean.csv.gz", compression='gzip')
+
+#@begin replaceNA
+#@desc Replace empty strings with NA for easier pandas compute
+#@in Dish_clean
+#@out dish_1
+dish.fillna('', inplace=True)
+#@end replaceNA
+
+#@begin caseFix
+#@desc Convert to title case
+#@in dish_1
+#@out dish_2
 words = { "a la": re.compile(r'\bA La\b'),
           "of": re.compile(r'\bOf\b'),
          "in": re.compile(r'\bIn\b'),
@@ -32,9 +48,13 @@ def cleanDish(x):
         x = v.sub(k, x)
    
     return x
-
 dish['name'] = dish['name'].apply(cleanDish)
+#@end caseFix
 
+#@begin dedupDish
+#@desc Identify duplicate entries in the _name_ field, and consolidate rows
+#@in dish_2
+#@out dish_3
 def dedupDish():
     new_dish = dish.copy()
     
@@ -124,11 +144,27 @@ def dedupDish():
     return (new_dish, replaceKeys)
 
 (dish, replaceKeys) = dedupDish()
-dish.to_csv("p02_dish_cleaned.csv.gz", compression='gzip', index = False)
+#@end dedupDish
 
+#@begin exportData
+#@desc Write out results back to CSV
+#@in dish_3
+#@out Dish_clean_dedup @URI file:p02_dish_cleaned.csv.gz
+dish.to_csv("p02_dish_cleaned.csv.gz", compression='gzip', index = False)
+#@end exportData
+
+#@begin importMenuItem
+#@desc Read in MenuItem
+#@in MenuItem_clean @URI file:../01_openrefine/MenuItem_clean.csv.gz
+#@out menuitem_1 
 menuItem = pd.read_csv("../01_openrefine/MenuItem_clean.csv.gz", compression='gzip')
 menuItem['dish_id'] = menuItem['dish_id'].astype('Int64')
+#@end importMenuItem
 
+#@begin replaceForeignKeys
+#@desc Replace the duplicate entries' Foreign Keys with the new IDs 
+#@in menuitem_1
+#@out menuitem_2
 def replaceDishID(x):
     if x in replaceKeys: return replaceKeys[x]
     else: return x
@@ -136,5 +172,32 @@ def replaceDishID(x):
 temp = menuItem['dish_id'].apply(replaceDishID).astype('Int64')
 print("{0} rows changed, {1} not changed.".format(sum(temp != menuItem['dish_id']), sum(temp == menuItem['dish_id'])))
 menuItem['dish_id'] = temp
+#@end replaceForeignKeys
 
+#@begin exportMenuItem
+#@in menuitem_2
+#@out MenuItem_clean2 @URI file:../03_python/p02_MenuItem_cleaned.csv.gz
 menuItem.to_csv("p02_MenuItem_cleaned.csv.gz", compression='gzip', index = False)
+#@end exportMenuItem
+
+#@begin exportTokens
+#@in dish_3
+#@out tokens @URI file:tokens.csv
+# This breaks up dish into tokens and collects them in a single placce.
+# No need to rerun this unless you need to recrate tokens.csv
+results = {}
+for (index, row) in dish.iterrows():
+    el = row['name'].split()
+    for em in el:
+        if em in results: results[em] += 1
+        else: results[em] = 1
+
+results_df = pd.DataFrame({"token": list(results.keys()),
+                        "frequency": list(results.values())})
+results_df.to_csv("tokens.csv", index = False)
+#@end exportTokens
+
+#@out tokens
+#@out Dish_clean_dedup
+#@out MenuItem_clean2
+#@end CleanDish_python1

@@ -1,4 +1,5 @@
-#@begin MenuPage.csv #@desc or2yw conversion
+#@begin CleanMenuPage
+#@desc or2yw conversion
 #@param col-name:uuid
 #@param col-name:id
 #@param col-name:menu_id
@@ -9,95 +10,90 @@
 #@param expression:value.replace(/\\s+/,'_')
 #@param col-name:full_width
 #@param col-name:full_height
-#@in table10 @URI file:../rawData/MenuPage.csv.gz
-#@out MenuPage_clean.csv.gz @URI file:../01_openrefine/MenuPage_clean.csv.gz
+#@in MenuPage @URI file:../raw_data/MenuPage.csv.gz
+#@out MenuPage_clean @URI file:../01_openrefine/MenuPage_clean.csv.gz
 #@begin core/text-transform0#@desc Text transform on cells in column id using expression value.toNumber()
 #@param col-name:id
 #@param expression:value.toNumber()
-#@in table10
-#@out table11
+#@in MenuPage
+#@out table1
 #@end core/text-transform0
 #@begin core/text-transform1#@desc Text transform on cells in column menu_id using expression value.toNumber()
 #@param col-name:menu_id
 #@param expression:value.toNumber()
-#@in table11
-#@out table12
+#@in table1
+#@out table2
 #@end core/text-transform1
 #@begin core/text-transform2#@desc Text transform on cells in column page_number using expression value.toNumber()
 #@param col-name:page_number
 #@param expression:value.toNumber()
-#@in table12
-#@out table13
+#@in table2
+#@out table3
 #@end core/text-transform2
 #@begin core/text-transform3#@desc Text transform on cells in column image_id using expression value.toNumber()
 #@param col-name:image_id
 #@param expression:value.toNumber()
-#@in table13
-#@out table14
+#@in table3
+#@out table4
 #@end core/text-transform3
 #@begin core/text-transform4#@desc Text transform on cells in column full_height using expression value.toNumber()
 #@param col-name:full_height
 #@param expression:value.toNumber()
-#@in table14
-#@out table15
+#@in table4
+#@out table5
 #@end core/text-transform4
 #@begin core/text-transform5#@desc Text transform on cells in column full_width using expression value.toNumber()
 #@param col-name:full_width
 #@param expression:value.toNumber()
-#@in table15
-#@out table16
+#@in table5
+#@out table6
 #@end core/text-transform5
 #@begin core/text-transform6#@desc Text transform on cells in column uuid using expression value.trim()
 #@param col-name:uuid
 #@param expression:value.trim()
-#@in table16
-#@out table17
+#@in table6
+#@out table7
 #@end core/text-transform6
 #@begin core/text-transform7#@desc Text transform on cells in column uuid using expression value.replace(/\\s+/,' ')
 #@param col-name:uuid
 #@param expression:value.replace(/\\s+/,'_')
-#@in table17
-#@out table18
+#@in table7
+#@out table8
 #@end core/text-transform7
 #@begin core/text-transform8#@desc Text transform on cells in column full_width using expression value.trim()
 #@param col-name:full_width
 #@param expression:value.trim()
-#@in table18
-#@out table19
+#@in table8
+#@out table9
 #@end core/text-transform8
 #@begin core/text-transform9#@desc Text transform on cells in column full_height using expression value.trim()
 #@param col-name:full_height
 #@param expression:value.trim()
-#@in table19
-#@out table20
+#@in table9
+#@out table10
 #@end core/text-transform9
 #@begin core/text-transform10#@desc Text transform on cells in column image_id using expression value.trim()
 #@param col-name:image_id
 #@param expression:value.trim()
-#@in table20
-#@out table21
+#@in table10
+#@out table11
 #@end core/text-transform10
 #@begin core/text-transform11#@desc Text transform on cells in column page_number using expression value.trim()
 #@param col-name:page_number
 #@param expression:value.trim()
-#@in table21
-#@out table22
+#@in table11
+#@out table12
 #@end core/text-transform11
 #@begin core/text-transform12#@desc Text transform on cells in column menu_id using expression value.trim()
 #@param col-name:menu_id
 #@param expression:value.trim()
-#@in table22
-#@out table23
+#@in table12
+#@out table13
 #@end core/text-transform12
 #@begin core/text-transform13#@desc Text transform on cells in column id using expression value.trim()
 #@param col-name:id
 #@param expression:value.trim()
-#@in table23
-#@out table24
+#@in table13
+#@out MenuPage_clean
 #@end core/text-transform13
-#@begin renameMenuPage
-#@desc passthrough
-#@in table24
-#@out MenuPage_clean.csv.gz
-#@end renameMenuPage
-#@end MenuPage.csv
+#@end CleanMenuPage
