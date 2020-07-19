@@ -1,5 +1,3 @@
-parallel_data_tokens(dish_clean_dedup)
-parallel_data_tokens(menuitem_clean2)
 upstream_data_type_tokens(dish_clean)
 upstream_data_type_tokens(menuitem_clean)
 upstream_data_type_tokens(dish)
@@ -13,4 +11,6 @@ downstream_data_type_tokens(dish_table)
 downstream_step_type_tokens(cleandish_manual)
 downstream_step_type_tokens(cleandish_python2)
 downstream_step_type_tokens(import_dish)
+parallel_data_type_tokens(dish_clean_dedup)
+parallel_data_type_tokens(menuitem_clean2)
 
