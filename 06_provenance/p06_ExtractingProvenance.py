@@ -9,12 +9,13 @@ workflow_rules = "upstream(X,Y) :- edge(X,Y)." \
                  "upstream(X,Y) :- edge(X,Z), upstream(Z,Y)." \
                  "downstream(X,Y) :- edge(Y,X)." \
                  "downstream(X,Y) :- edge(Y,Z), downstream(X,Z)." \
+                 "parallel(X,Y) :- edge(Z,X), edge(Z,Y), X<Y." \
                  "upstream_data_type(X,Y) :- upstream(X,Y), data(X)." \
                  "upstream_step_type(X,Y) :- upstream(X,Y), step(X)." \
                  "downstream_data_type(X,Y) :- downstream(X,Y), data(X)." \
                  "downstream_step_type(X,Y) :- downstream(X,Y), step(X)." \
-                 "parallel_data_type(X,Y) :- edge(Z,X), edge(Z,Y), data(X), data(Y), X<Y." \
-                 "parallel_step_type(X,Y) :- edge(Z,X), edge(Z,Y), step(X), step(Y), X<Y."
+                 "parallel_data_type(X,Y) :- parallel(X,Y), data(X), data(Y)." \
+                 "parallel_step_type(X,Y) :- parallel(X,Y), step(X), step(Y)."
 
 def read_data(link):
     """
@@ -109,6 +110,7 @@ def clean_output_txt(file, output_link):
     data = re.sub('step\([a-z_0-9]*\) *', '', data)
     data = re.sub('upstream\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
     data = re.sub('downstream\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
+    data = re.sub('parallel\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
     data = re.sub(' ','\n', data)
     output = open(output_link, 'w')
     print(data, file = output)
@@ -127,6 +129,7 @@ def clean_output_txt_as_sample_query(file, output_link):
     data = re.sub('step\([a-z_0-9]*\) *', '', data)
     data = re.sub('upstream\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
     data = re.sub('downstream\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
+    data = re.sub('parallel\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
     data = re.sub('upstream_data_type\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
     data = re.sub('upstream_step_type\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
     data = re.sub('downstream_data_type\([a-z_0-9]*,[a-z_0-9]*\) *', '', data)
