@@ -281,6 +281,6 @@ downstream_step_type(import_menuitem,cleandish)
 downstream_step_type(import_menuitem,dish)
 downstream_step_type(import_menuitem,menuitem)
 parallel_data_type(dish_clean_dedup,tokens)
-parallel_data_type(dish_clean_dedup,menuitem_clean2)
 parallel_data_type(menuitem_clean2,tokens)
+parallel_data_type(dish_clean_dedup,menuitem_clean2)
 
