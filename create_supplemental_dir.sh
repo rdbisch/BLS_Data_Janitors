@@ -25,5 +25,5 @@ echo https://www.dropbox.com/sh/w36btljjgjk8v5e/AACShbDvzauP_4-jcNinrY_Ba?dl=0 >
 echo https://github.com/rdbisch/BLS_Data_Janitors >> Data_Link.txt
 
 cd ..
-zip -r supplemeental.zip supplemental/
+zip -r supplemental.zip supplemental/
 rm -fr supplemental
