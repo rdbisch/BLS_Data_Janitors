@@ -1,0 +1,113 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Helvetica; fontsize=18; labelloc=t
+label=Linear_OR
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; penwidth=0
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing atomic programs in workflow */
+"core/text-transform0#" [shape=record rankdir=LR label="{<f0> core/text-transform0# |<f1> Text transform on cells in column id using expression value.toNumber()}"];
+"core/column-removal0#" [shape=record rankdir=LR label="{<f0> core/column-removal0# |<f1> Remove column description}"];
+"core/text-transform1#" [shape=record rankdir=LR label="{<f0> core/text-transform1# |<f1> Text transform on cells in column menus_appeared using expression value.toNumber()}"];
+"core/text-transform2#" [shape=record rankdir=LR label="{<f0> core/text-transform2# |<f1> Text transform on cells in column times_appeared using expression value.toNumber()}"];
+"core/text-transform3#" [shape=record rankdir=LR label="{<f0> core/text-transform3# |<f1> Text transform on cells in column first_appeared using expression value.toNumber()}"];
+"core/text-transform4#" [shape=record rankdir=LR label="{<f0> core/text-transform4# |<f1> Text transform on cells in column last_appeared using expression value.toNumber()}"];
+"core/text-transform5#" [shape=record rankdir=LR label="{<f0> core/text-transform5# |<f1> Text transform on cells in column lowest_price using expression value.toNumber()}"];
+"core/text-transform6#" [shape=record rankdir=LR label="{<f0> core/text-transform6# |<f1> Text transform on cells in column highest_price using expression value.toNumber()}"];
+"core/text-transform7#" [shape=record rankdir=LR label="{<f0> core/text-transform7# |<f1> Text transform on cells in column name using expression value.trim()}"];
+"core/text-transform8#" [shape=record rankdir=LR label="{<f0> core/text-transform8# |<f1> Text transform on cells in column name using expression value.replace(/\\s+/,' ')}"];
+"core/column-addition0#" [shape=record rankdir=LR label="{<f0> core/column-addition0# |<f1> Create column name_cluster at index 2 based on column name using expression grel\:value}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+table11
+table0
+table1
+table2
+table3
+table4
+table5
+table6
+table7
+table8
+table9
+table10
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+"col-name:id"
+"expression:value.toNumber()"
+"col-name:description"
+"col-name:menus_appeared"
+"col-name:times_appeared"
+"col-name:first_appeared"
+"col-name:last_appeared"
+"col-name:lowest_price"
+"col-name:highest_price"
+"col-name:name"
+"expression:value.trim()"
+"expression:value.replace(/\\s+/,'_')"
+
+/* Edges representing connections between programs and channels */
+"core/text-transform0#" -> table1
+"col-name:id" -> "core/text-transform0#"
+"expression:value.toNumber()" -> "core/text-transform0#"
+table0 -> "core/text-transform0#"
+"core/column-removal0#" -> table2
+"col-name:description" -> "core/column-removal0#"
+table1 -> "core/column-removal0#"
+"core/text-transform1#" -> table3
+"col-name:menus_appeared" -> "core/text-transform1#"
+"expression:value.toNumber()" -> "core/text-transform1#"
+table2 -> "core/text-transform1#"
+"core/text-transform2#" -> table4
+"col-name:times_appeared" -> "core/text-transform2#"
+"expression:value.toNumber()" -> "core/text-transform2#"
+table3 -> "core/text-transform2#"
+"core/text-transform3#" -> table5
+"col-name:first_appeared" -> "core/text-transform3#"
+"expression:value.toNumber()" -> "core/text-transform3#"
+table4 -> "core/text-transform3#"
+"core/text-transform4#" -> table6
+"col-name:last_appeared" -> "core/text-transform4#"
+"expression:value.toNumber()" -> "core/text-transform4#"
+table5 -> "core/text-transform4#"
+"core/text-transform5#" -> table7
+"col-name:lowest_price" -> "core/text-transform5#"
+"expression:value.toNumber()" -> "core/text-transform5#"
+table6 -> "core/text-transform5#"
+"core/text-transform6#" -> table8
+"col-name:highest_price" -> "core/text-transform6#"
+"expression:value.toNumber()" -> "core/text-transform6#"
+table7 -> "core/text-transform6#"
+"core/text-transform7#" -> table9
+"col-name:name" -> "core/text-transform7#"
+"expression:value.trim()" -> "core/text-transform7#"
+table8 -> "core/text-transform7#"
+"core/text-transform8#" -> table10
+"col-name:name" -> "core/text-transform8#"
+"expression:value.replace(/\\s+/,'_')" -> "core/text-transform8#"
+table9 -> "core/text-transform8#"
+"core/column-addition0#" -> table11
+"col-name:name" -> "core/column-addition0#"
+"newColumnName:\"name_cluster\"" -> "core/column-addition0#"
+table10 -> "core/column-addition0#"
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* End of top-level graph */
+}

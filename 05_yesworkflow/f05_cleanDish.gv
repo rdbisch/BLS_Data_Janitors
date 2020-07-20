@@ -1,0 +1,54 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Courier; fontsize=18; labelloc=t
+label=CleanDish_python2
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+
+/* Nodes representing atomic programs in workflow */
+importData [shape=record rankdir=LR label="{<f0> importData |<f1> Import data from CSV into pandas}"];
+importTokens [shape=record rankdir=LR label="{<f0> importTokens |<f1> Import tokens from CSV into pandas}"];
+convertDishToCuisine [shape=record rankdir=LR label="{<f0> convertDishToCuisine |<f1> Extract information from dish name}"];
+exportData [shape=record rankdir=LR label="{<f0> exportData |<f1> COnvert Pandas back into CSV}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+Dish_clean2 [shape=record rankdir=LR label="{<f0> Dish_clean2 |<f1> file\:../03_python/p03_disch_cleaned.csv.gz}"];
+Dish_clean_dedup [shape=record rankdir=LR label="{<f0> Dish_clean_dedup |<f1> file\:p02_dish_cleaned.csv.gz}"];
+tokens_cleaned [shape=record rankdir=LR label="{<f0> tokens_cleaned |<f1> file\:../03_python/tokens_cleaned.csv}"];
+dish_1
+tokens_cleaned_1
+dish_2
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+
+/* Edges representing connections between programs and channels */
+importData -> dish_1
+Dish_clean_dedup -> importData
+importTokens -> tokens_cleaned_1
+tokens_cleaned -> importTokens
+convertDishToCuisine -> dish_2
+dish_1 -> convertDishToCuisine
+tokens_cleaned_1 -> convertDishToCuisine
+exportData -> Dish_clean2
+dish_2 -> exportData
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* End of top-level graph */
+}

@@ -1,0 +1,60 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Courier; fontsize=18; labelloc=t
+label=CleanMenu_python1
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+
+/* Nodes representing atomic programs in workflow */
+readData [shape=record rankdir=LR label="{<f0> readData |<f1> Import data from CSV into pandas}"];
+mapEventsToMeal [shape=record rankdir=LR label="{<f0> mapEventsToMeal |<f1> Extracts meal time from event, e.g. breakfast, lunch or dinner.}"];
+cleanVenue [shape=record rankdir=LR label="{<f0> cleanVenue |<f1> Clean Venue more thoroughly and group to a higher more useful level.}"];
+cleanPlace [shape=record rankdir=LR label="{<f0> cleanPlace |<f1> Clean place by splitting out vehicular travel and cities}"];
+convertDate [shape=record rankdir=LR label="{<f0> convertDate |<f1> Change the date information to ISO format}"];
+exportData [shape=record rankdir=LR label="{<f0> exportData |<f1> Write data back out to CSV}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+Menu_clean2 [shape=record rankdir=LR label="{<f0> Menu_clean2 |<f1> file\:../03_pyhton/p02_menu_cleaned.csv.gz}"];
+Menu_clean [shape=record rankdir=LR label="{<f0> Menu_clean |<f1> file\:../01_openrefine/Menu_clean.csv.gz}"];
+menu_1
+menu_2
+menu_3
+menu_4
+menu_5
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+
+/* Edges representing connections between programs and channels */
+readData -> menu_1
+Menu_clean -> readData
+mapEventsToMeal -> menu_2
+menu_1 -> mapEventsToMeal
+cleanVenue -> menu_3
+menu_2 -> cleanVenue
+cleanPlace -> menu_4
+menu_3 -> cleanPlace
+convertDate -> menu_5
+menu_4 -> convertDate
+exportData -> Menu_clean2
+menu_5 -> exportData
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* End of top-level graph */
+}

@@ -1,0 +1,59 @@
+@begin CleanDish_python1
+@desc Deduplicates dish names after cleaning.   See detail {TBD LINK}.
+@in Dish_clean @URI file:../01_openrefine/Dish_clean.csv.gz
+@in MenuItem_clean @URI file:../01_openrefine/MenuItem_clean.csv.gz
+@begin replaceNA
+@desc Replace empty strings with NA for easier pandas compute
+@in Dish_clean
+@out dish_1
+@end replaceNA
+@begin caseFix
+@desc Convert to title case
+@in dish_1
+@out dish_2
+Convert to title case
+Replace & with and
+Title is a little too greedy so correct
+Apply the pattern stored in the values of the dictionary,
+replacing it by the corresponding key.
+e.g. "A La" gets replaced by "a la" because "a la" => r'\bA La\b'
+@end caseFix
+@begin dedupDish
+@desc Identify duplicate entries in the _name_ field, and consolidate rows
+@in dish_2
+@out dish_3
+Sometimes these fields are blank. Change to NaN so that aggregates work better
+These are used for logistics--which foreign keys do we need to update
+and which rows do we need to delete
+Helper function with aggregate
+Hack to force new_rows to have same types as original data frame
+@end dedupDish
+@begin exportData
+@desc Write out results back to CSV
+@in dish_3
+@out Dish_clean_dedup @URI file:p02_dish_cleaned.csv.gz
+@end exportData
+@begin importMenuItem
+@desc Read in MenuItem
+@in MenuItem_clean @URI file:../01_openrefine/MenuItem_clean.csv.gz
+@out menuitem_1
+@end importMenuItem
+@begin replaceForeignKeys
+@desc Replace the duplicate entries' Foreign Keys with the new IDs
+@in menuitem_1
+@out menuitem_2
+@end replaceForeignKeys
+@begin exportMenuItem
+@in menuitem_2
+@out MenuItem_clean2 @URI file:../03_python/p02_MenuItem_cleaned.csv.gz
+@end exportMenuItem
+@begin exportTokens
+@in dish_3
+@out tokens @URI file:tokens.csv
+This breaks up dish into tokens and collects them in a single placce.
+No need to rerun this unless you need to recrate tokens.csv
+@end exportTokens
+@out tokens
+@out Dish_clean_dedup
+@out MenuItem_clean2
+@end CleanDish_python1

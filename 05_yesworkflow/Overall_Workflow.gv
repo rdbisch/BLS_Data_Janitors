@@ -1,0 +1,88 @@
+
+/* Start of top-level graph */
+digraph Workflow {
+rankdir=TB
+
+/* Title for graph */
+fontname=Courier; fontsize=18; labelloc=t
+label=CS513
+
+/* Start of double cluster for drawing box around nodes in workflow */
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+
+/* Style for nodes representing atomic programs in workflow */
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+
+/* Nodes representing atomic programs in workflow */
+CleanMenu [shape=record rankdir=LR label="{<f0> CleanMenu |<f1> OpenRefine. Need brief Explanation from Stanely. See detail \{TBD LINK\}.}"];
+CleanDish [shape=record rankdir=LR label="{<f0> CleanDish |<f1> OpenRefine. Need brief Explanation from Stanely. See detail \{TBD LINK\}.}"];
+CleanMenuItem [shape=record rankdir=LR label="{<f0> CleanMenuItem |<f1> OpenRefine. Need brief Explanation from Stanely. See detail \{TBD LINK\}.}"];
+CleanMenuPage [shape=record rankdir=LR label="{<f0> CleanMenuPage |<f1> OpenRefine. Need brief Explanation from Stanely. See detail \{TBD LINK\}.}"];
+CleanDish_python1 [shape=record rankdir=LR label="{<f0> CleanDish_python1 |<f1> Python. Deduplicates dish names after cleaning. See detail \{TBD LINK\}.}"];
+CleanMenu_python1 [shape=record rankdir=LR label="{<f0> CleanMenu_python1 |<f1> Python. Deeper cleaning and information extract of Menu. See detail \{TBD LINK\}.}"];
+CleanDish_Manual [shape=record rankdir=LR label="{<f0> CleanDish_Manual |<f1> Manual step of data cleaning. Extracted tokens from dish and manually labelled.}"];
+CleanDish_python2 [shape=record rankdir=LR label="{<f0> CleanDish_python2 |<f1> Python. Extracting cuisine information from dish name. See detail \{TBD LINK\}.}"];
+Import_Dish [shape=record rankdir=LR label="{<f0> Import_Dish |<f1> SQLite. Import csv file into SQL database.}"];
+Import_Menu [shape=record rankdir=LR label="{<f0> Import_Menu |<f1> SQLite. Import csv file into SQL database.}"];
+Import_MenuItem [shape=record rankdir=LR label="{<f0> Import_MenuItem |<f1> SQLite. Import csv file into SQL database.}"];
+
+/* Style for nodes representing non-parameter data channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+
+/* Nodes for non-parameter data channels in workflow */
+Menu [shape=record rankdir=LR label="{<f0> Menu |<f1> file\:../raw_data/Menu.csv.gz}"];
+Dish [shape=record rankdir=LR label="{<f0> Dish |<f1> file\:../raw_data/Dish.csv.gz}"];
+MenuItem [shape=record rankdir=LR label="{<f0> MenuItem |<f1> file\:../raw_data/MenuItem.csv.gz}"];
+MenuPage [shape=record rankdir=LR label="{<f0> MenuPage |<f1> file\:../raw_data/MenuPage.csv.gz}"];
+Dish_clean [shape=record rankdir=LR label="{<f0> Dish_clean |<f1> file\:../01_openrefine/Dish_clean.csv.gz}"];
+MenuItem_clean [shape=record rankdir=LR label="{<f0> MenuItem_clean |<f1> file\:../01_openrefine/MenuItem_clean.csv.gz}"];
+Menu_clean [shape=record rankdir=LR label="{<f0> Menu_clean |<f1> file\:../01_openrefine/Menu_clean.csv.gz}"];
+tokens [shape=record rankdir=LR label="{<f0> tokens |<f1> file\:../03_pyhton/tokens.csv}"];
+Dish_clean_dedup
+tokens_cleaned [shape=record rankdir=LR label="{<f0> tokens_cleaned |<f1> file\:../03_python/tokens_cleaned.csv}"];
+Dish_clean2 [shape=record rankdir=LR label="{<f0> Dish_clean2 |<f1> file\:../03_python/p03_disch_cleaned.csv.gz}"];
+Menu_clean2 [shape=record rankdir=LR label="{<f0> Menu_clean2 |<f1> file\:../03_pyhton/p02_menu_cleaned.csv.gz}"];
+MenuItem_clean2 [shape=record rankdir=LR label="{<f0> MenuItem_clean2 |<f1> file\:../03_python/p02_MenuItem_cleaned.csv.gz}"];
+dish_table
+menu_table
+menuitem_table
+
+/* Style for nodes representing parameter channels in workflow */
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+
+/* Nodes representing parameter channels in workflow */
+
+/* Edges representing connections between programs and channels */
+CleanMenu -> Menu_clean
+Menu -> CleanMenu
+CleanDish -> Dish_clean
+Dish -> CleanDish
+CleanMenuItem -> MenuItem_clean
+MenuItem -> CleanMenuItem
+CleanMenuPage -> MenuPage_clean
+MenuPage -> CleanMenuPage
+CleanDish_python1 -> tokens
+CleanDish_python1 -> Dish_clean_dedup
+CleanDish_python1 -> MenuItem_clean2
+Dish_clean -> CleanDish_python1
+MenuItem_clean -> CleanDish_python1
+CleanMenu_python1 -> Menu_clean2
+Menu_clean -> CleanMenu_python1
+CleanDish_Manual -> tokens_cleaned
+tokens -> CleanDish_Manual
+CleanDish_python2 -> Dish_clean2
+Dish_clean_dedup -> CleanDish_python2
+tokens_cleaned -> CleanDish_python2
+Import_Dish -> dish_table
+Dish_clean2 -> Import_Dish
+Import_Menu -> menu_table
+Menu_clean2 -> Import_Menu
+Import_MenuItem -> menuitem_table
+MenuItem_clean2 -> Import_MenuItem
+
+/* End of double cluster for drawing box around nodes in workflow */
+}}
+
+/* End of top-level graph */
+}
